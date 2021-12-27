@@ -31,6 +31,11 @@ public class ProdutoService {
 		return produtoRepository.save(newObj);
 	}
 	
+	public void delete(Integer id) {
+		find(id);
+		produtoRepository.deleteById(id);
+	}
+	
 	public Produto fromDTO(ProdutoDTO objDto) {
 		return new Produto(objDto.getId(), objDto.getCodigoProduto(), objDto.getDescricaoProduto());
 	}

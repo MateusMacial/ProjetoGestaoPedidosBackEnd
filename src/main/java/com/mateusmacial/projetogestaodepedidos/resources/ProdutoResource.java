@@ -50,4 +50,10 @@ public class ProdutoResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@RequestMapping(value="/delete", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(Integer id){
+		produtoService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
 }
