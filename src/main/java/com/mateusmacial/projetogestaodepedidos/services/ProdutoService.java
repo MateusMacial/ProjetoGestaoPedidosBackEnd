@@ -25,7 +25,18 @@ public class ProdutoService {
 		return produtoRepository.save(obj);
 	}
 	
+	public Produto update(Produto obj) {
+		Produto newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return produtoRepository.save(newObj);
+	}
+	
 	public Produto fromDTO(ProdutoDTO objDto) {
 		return new Produto(objDto.getId(), objDto.getCodigoProduto(), objDto.getDescricaoProduto());
+	}
+	
+	private void updateData(Produto newObj, Produto obj) {
+		newObj.setCodigoProduto(obj.getCodigoProduto());
+		newObj.setDescricaoProduto(obj.getDescricaoProduto());
 	}
 }

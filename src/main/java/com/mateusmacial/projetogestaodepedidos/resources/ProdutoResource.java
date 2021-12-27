@@ -41,4 +41,13 @@ public class ProdutoResource {
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	
+	@RequestMapping(value="/update", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody ProdutoDTO objDto, Integer id){		
+		Produto obj = produtoService.fromDTO(objDto);
+		obj.setId(id);
+		obj = produtoService.update(obj);
+		return ResponseEntity.noContent().build();
+	}
+	
 }
