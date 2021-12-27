@@ -1,6 +1,8 @@
 package com.mateusmacial.projetogestaodepedidos.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -54,6 +56,15 @@ public class ProdutoResource {
 	public ResponseEntity<Void> delete(Integer id){
 		produtoService.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<ProdutoDTO>> findAll() {		
+		List<Produto> list = produtoService.findAll();		
+		List<ProdutoDTO> listDto = list.stream()
+				.map(obj -> new ProdutoDTO(obj))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 }

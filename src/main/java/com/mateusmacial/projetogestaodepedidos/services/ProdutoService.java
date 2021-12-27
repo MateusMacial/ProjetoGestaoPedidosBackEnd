@@ -1,5 +1,6 @@
 package com.mateusmacial.projetogestaodepedidos.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class ProdutoService {
 	public void delete(Integer id) {
 		find(id);
 		produtoRepository.deleteById(id);
+	}
+	
+	public List<Produto> findAll(){
+		return produtoRepository.findAll();
 	}
 	
 	public Produto fromDTO(ProdutoDTO objDto) {
