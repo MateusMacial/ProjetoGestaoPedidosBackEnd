@@ -1,29 +1,24 @@
 package com.mateusmacial.projetogestaodepedidos.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mateusmacial.projetogestaodepedidos.domain.Produto;
+import com.mateusmacial.projetogestaodepedidos.services.ProdutoService;
 
 @RestController
 @RequestMapping(value="/produtos")
 public class ProdutoResource {
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Produto> listar() {
-		
-		Produto prod1 = new Produto(1, "1343", "Banana");
-		Produto prod2 = new Produto(2, "78678", "Batata");
-		
-		List<Produto> lista = new ArrayList<>();
-		
-		lista.add(prod1);
-		lista.add(prod2);
-		
-		return lista;
+	@Autowired 
+	private ProdutoService produtoService;
+	
+	@RequestMapping(value="/find", method=RequestMethod.GET)
+	public ResponseEntity<?> find(Integer id) {		
+		Produto obj = produtoService.find(id);				
+		return ResponseEntity.ok().body(obj);
 	}
 }
