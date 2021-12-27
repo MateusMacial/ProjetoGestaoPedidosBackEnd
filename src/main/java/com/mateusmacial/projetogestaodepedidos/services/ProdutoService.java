@@ -42,7 +42,7 @@ public class ProdutoService {
 	}
 	
 	public Produto fromDTO(ProdutoDTO objDto) {
-		return new Produto(objDto.getId(), objDto.getCodigoProduto(), objDto.getDescricaoProduto());
+		return new Produto(objDto.getId(), objDto.getCodigoProduto(), objDto.getDescricaoProduto(), objDto.getPedido());
 	}
 	
 	private void updateData(Produto newObj, Produto obj) {

@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable {
@@ -18,14 +22,20 @@ public class Produto implements Serializable {
 	private String codigoProduto;
 	private String descricaoProduto;
 	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "id_pedido", referencedColumnName = "id")
+	private Pedido pedido;
+	
 	public Produto() {
 		
 	}
-	public Produto(Integer id, String codigoProduto, String descricaoProduto) {
+	public Produto(Integer id, String codigoProduto, String descricaoProduto, Pedido pedido) {
 		super();
 		this.id = id;
 		this.codigoProduto = codigoProduto;
 		this.descricaoProduto = descricaoProduto;
+		this.pedido = pedido;
 	}
 	
 	public Integer getId() {
@@ -47,6 +57,13 @@ public class Produto implements Serializable {
 	}
 	public void setDescricaoProduto(String descricaoProduto) {
 		this.descricaoProduto = descricaoProduto;
+	}
+	
+	public Pedido getPedido() {
+		return pedido;
+	}
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
 	}
 	
 	@Override

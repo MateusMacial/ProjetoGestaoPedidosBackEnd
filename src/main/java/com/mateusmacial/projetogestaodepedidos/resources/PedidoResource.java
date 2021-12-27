@@ -14,29 +14,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mateusmacial.projetogestaodepedidos.domain.Produto;
-import com.mateusmacial.projetogestaodepedidos.dto.ProdutoDTO;
-import com.mateusmacial.projetogestaodepedidos.services.ProdutoService;
+import com.mateusmacial.projetogestaodepedidos.domain.Pedido;
+import com.mateusmacial.projetogestaodepedidos.dto.PedidoDTO;
+import com.mateusmacial.projetogestaodepedidos.services.PedidoService;
 
 @RestController
-@RequestMapping(value="/produtos")
-public class ProdutoResource {
+@RequestMapping(value="/pedidos")
+public class PedidoResource {
 	
 	@Autowired 
-	private ProdutoService produtoService;
+	private PedidoService pedidoService;
 	
 	@RequestMapping(value="/find", method=RequestMethod.GET)
 	public ResponseEntity<?> find(Integer id) {		
-		Produto obj = produtoService.find(id);				
+		Pedido obj = pedidoService.find(id);				
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ProdutoDTO objDto){ 
-		Produto obj = produtoService.fromDTO(objDto);
-		obj = produtoService.insert(obj);
+	public ResponseEntity<Void> insert(@Valid @RequestBody PedidoDTO objDto){ 
+		Pedido obj = pedidoService.fromDTO(objDto);
+		obj = pedidoService.insert(obj);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
+				//.path("/{id}")
 				.path("/id")
 				.buildAndExpand(obj.getId())
 				.toUri();
@@ -44,24 +45,24 @@ public class ProdutoResource {
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody ProdutoDTO objDto, Integer id){		
-		Produto obj = produtoService.fromDTO(objDto);
+	public ResponseEntity<Void> update(@Valid @RequestBody PedidoDTO objDto, Integer id){		
+		Pedido obj = pedidoService.fromDTO(objDto);
 		obj.setId(id);
-		obj = produtoService.update(obj);
+		obj = pedidoService.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(value="/delete", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(Integer id){
-		produtoService.delete(id);
+		pedidoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<ProdutoDTO>> findAll() {		
-		List<Produto> list = produtoService.findAll();		
-		List<ProdutoDTO> listDto = list.stream()
-				.map(obj -> new ProdutoDTO(obj))
+	public ResponseEntity<List<PedidoDTO>> findAll() {		
+		List<Pedido> list = pedidoService.findAll();		
+		List<PedidoDTO> listDto = list.stream()
+				.map(obj -> new PedidoDTO(obj))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
