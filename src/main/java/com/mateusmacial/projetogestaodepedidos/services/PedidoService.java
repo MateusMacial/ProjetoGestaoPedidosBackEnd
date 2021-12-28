@@ -28,7 +28,7 @@ public class PedidoService {
 	
 	public Pedido update(Pedido obj) {
 		Pedido newObj = find(obj.getId());
-		updateData(newObj, obj);
+		updateData(newObj, obj);		
 		return pedidoRepository.save(newObj);
 	}
 	

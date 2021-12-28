@@ -30,12 +30,11 @@ public class Produto implements Serializable {
 	public Produto() {
 		
 	}
-	public Produto(Integer id, String codigoProduto, String descricaoProduto, Pedido pedido) {
+	public Produto(Integer id, String codigoProduto, String descricaoProduto) {
 		super();
 		this.id = id;
 		this.codigoProduto = codigoProduto;
 		this.descricaoProduto = descricaoProduto;
-		this.pedido = pedido;
 	}
 	
 	public Integer getId() {

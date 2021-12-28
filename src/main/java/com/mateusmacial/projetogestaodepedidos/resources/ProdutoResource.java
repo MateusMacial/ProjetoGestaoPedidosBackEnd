@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,7 @@ import com.mateusmacial.projetogestaodepedidos.dto.ProdutoDTO;
 import com.mateusmacial.projetogestaodepedidos.services.ProdutoService;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value="/produtos")
 public class ProdutoResource {
 	
@@ -43,10 +45,9 @@ public class ProdutoResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@RequestMapping(value="/update", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody ProdutoDTO objDto, Integer id){		
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public ResponseEntity<Void> update(@Valid @RequestBody ProdutoDTO objDto){		
 		Produto obj = produtoService.fromDTO(objDto);
-		obj.setId(id);
 		obj = produtoService.update(obj);
 		return ResponseEntity.noContent().build();
 	}
