@@ -38,8 +38,8 @@ public class ProjetogestaodepedidosApplication implements CommandLineRunner {
 		Produto prod2 = new Produto(null, "76789", "Batata", ped1);
 		Produto prod3 = new Produto(null, "455", "Maça", ped2);
 		
-		ped1.getProdutos().addAll(Arrays.asList(prod1, prod2));
-		ped2.getProdutos().addAll(Arrays.asList(prod3));
+		ped1.getProdutosDoPedido().addAll(Arrays.asList(prod2));
+		ped2.getProdutosDoPedido().addAll(Arrays.asList(prod3));
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3));

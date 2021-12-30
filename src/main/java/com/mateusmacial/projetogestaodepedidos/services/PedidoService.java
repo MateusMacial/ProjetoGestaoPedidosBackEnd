@@ -16,10 +16,7 @@ public class PedidoService {
 	
 	@Autowired 
 	private PedidoRepository pedidoRepository;
-	
-	@Autowired 
-	private ProdutoService produtoService;
-	
+		
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = pedidoRepository.findById(id);
 		return obj.orElse(null);
@@ -32,7 +29,7 @@ public class PedidoService {
 	
 	public Pedido update(Pedido obj) {
 		Pedido newObj = find(obj.getId());
-		updateData(newObj, obj);		
+		updateData(newObj, obj);
 		return pedidoRepository.save(newObj);
 	}
 	
@@ -42,10 +39,8 @@ public class PedidoService {
 	}
 	
 	public void insertProduto(Pedido pedido, Produto produtoInserir) {
-		Pedido pedidoEncontrado = find(pedido.getId());
-		pedidoEncontrado.adicionarProduto(produtoInserir);
-		Produto produto = produtoService.find(produtoInserir.getId());
-		produto.setPedido(pedidoEncontrado);
+		pedido.adicionarProduto(produtoInserir);
+		produtoInserir.setPedido(pedido);
 	}
 	
 	public List<Pedido> findAll(){
@@ -61,5 +56,6 @@ public class PedidoService {
 		newObj.setCliente(obj.getCliente());
 		newObj.setDataEntrega(obj.getDataEntrega());
 		newObj.setObservacao(obj.getObservacao());
+		newObj.setProdutosDoPedido(obj.getProdutosDoPedido());
 	}
 }

@@ -1,6 +1,5 @@
 package com.mateusmacial.projetogestaodepedidos.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,14 +40,11 @@ public class PedidoResource {
 	@RequestMapping(method=RequestMethod.POST)
 	public Pedido insert(@Valid @RequestBody PedidoDTO objDto){
 		Pedido pedido = pedidoService.fromDTO(objDto);
-		List<Produto> produtos = new ArrayList<>();
 		for (ProdutoDTO produtoDto : objDto.getProdutosDoPedido()) {
-			produtos.add(produtoService.fromDTO(produtoDto));
+			Produto produto = produtoService.find(produtoDto.getId());
+			pedidoService.insertProduto(pedido, produto);
 		}
-		pedidoService.insert(pedido);
-		for (Produto produto : produtos) {
-			pedidoService.insertProduto(pedido, produto);					
-		}
+		pedido = pedidoService.insert(pedido);		
 		return pedido;
 	}
 	

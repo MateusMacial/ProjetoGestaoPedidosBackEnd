@@ -26,7 +26,7 @@ public class Pedido implements Serializable {
 	private String observacao;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
-	private List<Produto> produtos = new ArrayList<>();
+	private List<Produto> produtosDoPedido = new ArrayList<>();
 	
 	public Pedido() {
 		
@@ -75,19 +75,19 @@ public class Pedido implements Serializable {
 		this.observacao = observacao;
 	}
 	
-	public List<Produto> getProdutos() {
-		return produtos;
+	public List<Produto> getProdutosDoPedido() {
+		return produtosDoPedido;
 	}
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	public void setProdutosDoPedido(List<Produto> produtosDoPedido) {
+		this.produtosDoPedido = produtosDoPedido;
 	}
 	
 	public void adicionarProduto(Produto produtoParaInserir) {
-		this.produtos.add(produtoParaInserir);
+		this.produtosDoPedido.add(produtoParaInserir);
 	}
 	
-	public void removerProdutos(Produto produtoParaDeletar) {
-		this.produtos.remove(produtoParaDeletar);
+	public void removerProduto(Produto produtoParaDeletar) {
+		this.produtosDoPedido.remove(produtoParaDeletar);
 	}
 	
 	@Override
