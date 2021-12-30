@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mateusmacial.projetogestaodepedidos.domain.Pedido;
+import com.mateusmacial.projetogestaodepedidos.domain.Produto;
 import com.mateusmacial.projetogestaodepedidos.dto.PedidoDTO;
 import com.mateusmacial.projetogestaodepedidos.repositories.PedidoRepository;
 
@@ -15,6 +16,9 @@ public class PedidoService {
 	
 	@Autowired 
 	private PedidoRepository pedidoRepository;
+	
+	@Autowired 
+	private ProdutoService produtoService;
 	
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = pedidoRepository.findById(id);
@@ -35,6 +39,13 @@ public class PedidoService {
 	public void delete(Integer id) {
 		find(id);
 		pedidoRepository.deleteById(id);
+	}
+	
+	public void insertProduto(Pedido pedido, Produto produtoInserir) {
+		Pedido pedidoEncontrado = find(pedido.getId());
+		pedidoEncontrado.adicionarProduto(produtoInserir);
+		Produto produto = produtoService.find(produtoInserir.getId());
+		produto.setPedido(pedidoEncontrado);
 	}
 	
 	public List<Pedido> findAll(){

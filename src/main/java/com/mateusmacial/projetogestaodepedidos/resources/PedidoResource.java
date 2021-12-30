@@ -1,6 +1,6 @@
 package com.mateusmacial.projetogestaodepedidos.resources;
 
-import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,22 +8,29 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mateusmacial.projetogestaodepedidos.domain.Pedido;
+import com.mateusmacial.projetogestaodepedidos.domain.Produto;
 import com.mateusmacial.projetogestaodepedidos.dto.PedidoDTO;
+import com.mateusmacial.projetogestaodepedidos.dto.ProdutoDTO;
 import com.mateusmacial.projetogestaodepedidos.services.PedidoService;
+import com.mateusmacial.projetogestaodepedidos.services.ProdutoService;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value="/pedidos")
 public class PedidoResource {
 	
 	@Autowired 
 	private PedidoService pedidoService;
+	
+	@Autowired
+	private ProdutoService produtoService;
 	
 	@RequestMapping(value="/find", method=RequestMethod.GET)
 	public ResponseEntity<?> find(Integer id) {		
@@ -32,22 +39,22 @@ public class PedidoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody PedidoDTO objDto){ 
-		Pedido obj = pedidoService.fromDTO(objDto);
-		obj = pedidoService.insert(obj);
-		URI uri = ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				//.path("/{id}")
-				.path("/id")
-				.buildAndExpand(obj.getId())
-				.toUri();
-		return ResponseEntity.created(uri).build();
+	public Pedido insert(@Valid @RequestBody PedidoDTO objDto){
+		Pedido pedido = pedidoService.fromDTO(objDto);
+		List<Produto> produtos = new ArrayList<>();
+		for (ProdutoDTO produtoDto : objDto.getProdutosDoPedido()) {
+			produtos.add(produtoService.fromDTO(produtoDto));
+		}
+		pedidoService.insert(pedido);
+		for (Produto produto : produtos) {
+			pedidoService.insertProduto(pedido, produto);					
+		}
+		return pedido;
 	}
 	
-	@RequestMapping(value="/update", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody PedidoDTO objDto, Integer id){		
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public ResponseEntity<Void> update(@Valid @RequestBody PedidoDTO objDto){		
 		Pedido obj = pedidoService.fromDTO(objDto);
-		obj.setId(id);
 		obj = pedidoService.update(obj);
 		return ResponseEntity.noContent().build();
 	}
@@ -65,6 +72,5 @@ public class PedidoResource {
 				.map(obj -> new PedidoDTO(obj))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
-	}
-	
+	}	
 }

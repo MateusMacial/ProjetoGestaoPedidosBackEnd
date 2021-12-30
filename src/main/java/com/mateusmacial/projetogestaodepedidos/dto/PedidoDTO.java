@@ -1,7 +1,9 @@
 package com.mateusmacial.projetogestaodepedidos.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.mateusmacial.projetogestaodepedidos.domain.Pedido;
 
@@ -13,6 +15,8 @@ public class PedidoDTO implements Serializable {
 	private String cliente;
 	private Date dataEntrega;
 	private String observacao;
+	
+	private List<ProdutoDTO> produtosDoPedido = new ArrayList<>();
 	
 	public PedidoDTO() {
 		
@@ -60,4 +64,10 @@ public class PedidoDTO implements Serializable {
 		this.observacao = observacao;
 	}
 	
+	public List<ProdutoDTO> getProdutosDoPedido() {
+		return produtosDoPedido;
+	}
+	public void setProdutosDoPedido(List<ProdutoDTO> produtosDoPedido) {
+		this.produtosDoPedido = produtosDoPedido;
+	}
 }

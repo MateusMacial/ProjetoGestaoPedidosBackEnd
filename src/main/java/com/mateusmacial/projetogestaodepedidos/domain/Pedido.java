@@ -82,6 +82,14 @@ public class Pedido implements Serializable {
 		this.produtos = produtos;
 	}
 	
+	public void adicionarProduto(Produto produtoParaInserir) {
+		this.produtos.add(produtoParaInserir);
+	}
+	
+	public void removerProdutos(Produto produtoParaDeletar) {
+		this.produtos.remove(produtoParaDeletar);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
