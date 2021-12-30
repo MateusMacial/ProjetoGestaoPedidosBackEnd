@@ -57,6 +57,11 @@ public class PedidoResource {
 	
 	@RequestMapping(value="/delete", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(Integer id){
+		Pedido pedido = pedidoService.find(id);
+		for (Produto produto : pedido.getProdutosDoPedido()) {
+			produto.setPedido(null);
+		}
+		pedido.setProdutosDoPedido(null);
 		pedidoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
