@@ -44,12 +44,12 @@ public class PedidoResource {
 			Produto produto = produtoService.find(produtoDto.getId());
 			pedidoService.insertProduto(pedido, produto);
 		}
-		pedido = pedidoService.insert(pedido);		
+		pedido = pedidoService.insert(pedido);
 		return pedido;
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public ResponseEntity<Void> update(@Valid @RequestBody PedidoDTO objDto){		
+	public ResponseEntity<Void> update(@Valid @RequestBody PedidoDTO objDto){
 		Pedido obj = pedidoService.fromDTO(objDto);
 		obj = pedidoService.update(obj);
 		return ResponseEntity.noContent().build();
