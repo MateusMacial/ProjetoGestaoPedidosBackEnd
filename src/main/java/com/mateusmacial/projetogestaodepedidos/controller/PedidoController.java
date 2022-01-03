@@ -1,4 +1,4 @@
-package com.mateusmacial.projetogestaodepedidos.resources;
+package com.mateusmacial.projetogestaodepedidos.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mateusmacial.projetogestaodepedidos.domain.Pedido;
-import com.mateusmacial.projetogestaodepedidos.domain.Produto;
 import com.mateusmacial.projetogestaodepedidos.dto.PedidoDTO;
 import com.mateusmacial.projetogestaodepedidos.dto.ProdutoDTO;
+import com.mateusmacial.projetogestaodepedidos.entidades.Pedido;
+import com.mateusmacial.projetogestaodepedidos.entidades.Produto;
 import com.mateusmacial.projetogestaodepedidos.services.PedidoService;
 import com.mateusmacial.projetogestaodepedidos.services.ProdutoService;
 
 @RestController
 @CrossOrigin
 @RequestMapping(value="/pedidos")
-public class PedidoResource {
+public class PedidoController {
 	
 	@Autowired 
 	private PedidoService pedidoService;

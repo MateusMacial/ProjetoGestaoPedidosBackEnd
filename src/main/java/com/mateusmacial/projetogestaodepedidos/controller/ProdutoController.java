@@ -1,4 +1,4 @@
-package com.mateusmacial.projetogestaodepedidos.resources;
+package com.mateusmacial.projetogestaodepedidos.controller;
 
 import java.net.URI;
 import java.util.List;
@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mateusmacial.projetogestaodepedidos.domain.Produto;
 import com.mateusmacial.projetogestaodepedidos.dto.ProdutoDTO;
+import com.mateusmacial.projetogestaodepedidos.entidades.Produto;
 import com.mateusmacial.projetogestaodepedidos.services.ProdutoService;
 
 @RestController
 @CrossOrigin
 @RequestMapping(value="/produtos")
-public class ProdutoResource {
+public class ProdutoController {
 	
 	@Autowired 
 	private ProdutoService produtoService;

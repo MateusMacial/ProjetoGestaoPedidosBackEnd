@@ -1,30 +1,90 @@
 package com.mateusmacial.projetogestaodepedidos.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mateusmacial.projetogestaodepedidos.domain.Pedido;
-import com.mateusmacial.projetogestaodepedidos.domain.Produto;
+import com.mateusmacial.projetogestaodepedidos.dao.PedidoDao;
+import com.mateusmacial.projetogestaodepedidos.dao.ProdutoDao;
 import com.mateusmacial.projetogestaodepedidos.dto.PedidoDTO;
-import com.mateusmacial.projetogestaodepedidos.repositories.PedidoRepository;
+import com.mateusmacial.projetogestaodepedidos.dto.ProdutoPedidoDTO;
+import com.mateusmacial.projetogestaodepedidos.entidades.Pedido;
+import com.mateusmacial.projetogestaodepedidos.entidades.Produto;
+import com.mateusmacial.projetogestaodepedidos.entidades.ProdutoPedido;
+
+import antlr.StringUtils;
 
 @Service
 public class PedidoService {
 	
 	@Autowired 
-	private PedidoRepository pedidoRepository;
+	private PedidoDao pedidoDao;
+	
+	@Autowired
+	private ProdutoDao produtoDao;
 		
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = pedidoRepository.findById(id);
 		return obj.orElse(null);
 	}
 	
-	public Pedido insert(Pedido obj) {
-		obj.setId(null);
-		return pedidoRepository.save(obj);
+	public Pedido insert(PedidoDTO objDto) {
+		if(objDto == null) {
+			//ToDo
+		}
+		Pedido pedido;
+		if(objDto.getId() > 0) {
+			pedido = pedidoDao.findById(objDto.getId());
+		}
+		else {
+			pedido = new Pedido();
+		}
+		
+		if(StringUtils.isBlank(objDto.getcodigoPedido())) {
+			//ToDo
+		}
+		if(StringUtils.isBlank(objDto.getCliente())) {
+			//ToDo
+		}
+		if(objDto.getDataEntrega() == null) {
+			//ToDo
+		}
+		if(objDto.getProdutosDoPedido() == null) {
+			//ToDO
+		}
+		
+		pedido.setCodigoPedido(objDto.getcodigoPedido());
+		pedido.setCliente(objDto.getCliente());
+		pedido.setDataEntrega(objDto.getDataEntrega());
+		
+		if(pedido.getProdutosDoPedido() == null) {
+			pedido.setProdutosDoPedido(new ArrayList<>());
+		}
+		pedido.getProdutosDoPedido().clear();
+		
+		for (ProdutoPedidoDTO produtoPedidoDTO : objDto.getProdutosDoPedido()) {
+			
+			ProdutoPedido produtoPedido;
+			
+			if(produtoPedidoDTO.getId() > 0) {
+				produtoPedido = produtoDao.findById(produtoPedidoDTO.getId());
+			}
+			else {
+				produtoPedido = new ProdutoPedido();
+			}
+			
+			Produto produto = produtoDao.findById(produtoPedidoDTO.getProdutoId());
+			
+			produtoPedido.setPedido(pedido);
+			produtoPedido.setProdutoId(produto);
+			
+			pedido.getProdutosDoPedido().add(produtoPedido);
+		}
+		
+		pedidoDao.save(pedido);
 	}
 	
 	public Pedido update(Pedido obj) {
