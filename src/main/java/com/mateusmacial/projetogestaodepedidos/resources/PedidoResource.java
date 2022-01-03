@@ -50,8 +50,12 @@ public class PedidoResource {
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
 	public ResponseEntity<Void> update(@Valid @RequestBody PedidoDTO objDto){
-		Pedido obj = pedidoService.fromDTO(objDto);
-		obj = pedidoService.update(obj);
+		Pedido pedido = pedidoService.fromDTO(objDto);
+		for (ProdutoDTO produtoDto : objDto.getProdutosDoPedido()) {
+			Produto produto = produtoService.find(produtoDto.getId());
+			pedidoService.insertProduto(pedido, produto);
+		}
+		pedido = pedidoService.update(pedido);
 		return ResponseEntity.noContent().build();
 	}
 	

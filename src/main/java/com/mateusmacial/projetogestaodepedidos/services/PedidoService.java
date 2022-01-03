@@ -56,5 +56,16 @@ public class PedidoService {
 		newObj.setCliente(obj.getCliente());
 		newObj.setDataEntrega(obj.getDataEntrega());
 		newObj.setObservacao(obj.getObservacao());
+		
+		for (Produto produto : newObj.getProdutosDoPedido()) {
+			produto.setPedido(null);
+		}
+		
+		newObj.getProdutosDoPedido().clear();
+		
+		for (Produto produto : obj.getProdutosDoPedido()) {
+			produto.setPedido(newObj);
+			newObj.adicionarProduto(produto);
+		}
 	}
 }
