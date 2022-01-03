@@ -27,7 +27,9 @@ public class ProdutoService {
 		if(objDto == null) {
 			//ToDo
 		}
+		
 		Produto produto;
+		
 		if(objDto.getId() > 0) {
 			produto = produtoDao.findById(objDto.getId());
 		}

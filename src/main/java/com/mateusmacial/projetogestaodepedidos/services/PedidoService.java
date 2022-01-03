@@ -43,7 +43,7 @@ public class PedidoService {
 			pedido = new Pedido();
 		}
 		
-		if(StringUtils.isBlank(objDto.getcodigoPedido())) {
+		if(StringUtils.isBlank(objDto.getCodigoPedido())) {
 			//ToDo
 		}
 		if(StringUtils.isBlank(objDto.getCliente())) {
@@ -56,7 +56,7 @@ public class PedidoService {
 			//ToDO
 		}
 		
-		pedido.setCodigoPedido(objDto.getcodigoPedido());
+		pedido.setCodigoPedido(objDto.getCodigoPedido());
 		pedido.setCliente(objDto.getCliente());
 		pedido.setDataEntrega(objDto.getDataEntrega());
 		
