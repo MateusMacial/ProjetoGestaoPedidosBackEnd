@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 public class PedidoDTO {
 
-	private Integer id;
+	private long id;
 	private String codigoPedido;
 	private String cliente;
 	private Date dataEntrega;
 	private String observacao;
-	
+
 	private List<ProdutoPedidoDTO> produtosDoPedido;
 }

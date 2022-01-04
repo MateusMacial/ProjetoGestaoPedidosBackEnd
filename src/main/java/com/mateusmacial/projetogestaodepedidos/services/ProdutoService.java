@@ -10,67 +10,62 @@ import com.mateusmacial.projetogestaodepedidos.dao.ProdutoDao;
 import com.mateusmacial.projetogestaodepedidos.dto.ProdutoDTO;
 import com.mateusmacial.projetogestaodepedidos.entidades.Produto;
 
-import antlr.StringUtils;
+// import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class ProdutoService {
-	
-	@Autowired 
+
+	@Autowired
 	private ProdutoDao produtoDao;
-	
-	public Produto find(Integer id) {
-		Optional<Produto> obj = produtoRepository.findById(id);
+
+	private Produto find(long id) {
+		Optional<Produto> obj = produtoDao.findById(id);
 		return obj.orElse(null);
 	}
-	
-	public Produto save(ProdutoDTO objDto) {
-		if(objDto == null) {
-			//ToDo
-		}
-		
+
+	public Produto save(ProdutoDTO produtoDto) {
 		Produto produto;
-		
-		if(objDto.getId() > 0) {
-			produto = produtoDao.findById(objDto.getId());
+
+		if(produtoDto.getId() > 0) {
+			produto = produtoDao.getById(produtoDto.getId());
 		}
 		else {
 			produto = new Produto();
 		}
-		
-		if(StringUtils.isBlank(objDto.getCodigoProduto())) {
+		/*if(StringUtils.isBlank(produtoDto.getCodigoProduto())) {
 			//ToDo
 		}
-		if(StringUtils.isBlank(objDto.getDescricaoProduto())) {
+		if(StringUtils.isBlank(produtoDto.getDescricaoProduto())) {
 			//ToDo
-		}
-		
-		produto.setCodigoProduto(objDto.getCodigoProduto());
-		produto.setDescricaoProduto(objDto.getDescricaoProduto());
-		
-		produtoDao.save(produto);
+		}*/
+
+		produto.setCodigoProduto(produtoDto.getCodigoProduto());
+		produto.setDescricaoProduto(produtoDto.getDescricaoProduto());
+
+		return produtoDao.save(produto);
 	}
-	
-	public Produto update(Produto obj) {
+
+	/*public Produto update(Produto obj) {
 		Produto newObj = find(obj.getId());
 		updateData(newObj, obj);
-		return produtoRepository.save(newObj);
-	}
-	
-	public void delete(Integer id) {
+		return produtoDao.save(newObj);
+	}*/
+
+	public void delete(long id) {
 		find(id);
-		produtoRepository.deleteById(id);
+		produtoDao.deleteById(id);
 	}
-	
+
 	public List<Produto> findAll(){
-		return produtoRepository.findAll();
+		return produtoDao.findAll();
 	}
-	
-	public Produto fromDTO(ProdutoDTO objDto) {
-		return new Produto(objDto.getId(), objDto.getCodigoProduto(), objDto.getDescricaoProduto(), objDto.getPedido());
-	}
-	
-	private void updateData(Produto newObj, Produto obj) {
+
+	/*public Produto fromDTO(ProdutoDTO objDto) {
+		return new Produto(objDto.getId(), objDto.getCodigoProduto(), objDto.getDescricaoProduto());
+	}*/
+
+	/*private void updateData(Produto newObj, Produto obj) {
 		newObj.setCodigoProduto(obj.getCodigoProduto());
 		newObj.setDescricaoProduto(obj.getDescricaoProduto());
-	}
+	}*/
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.mateusmacial.projetogestaodepedidos.entidades.Pedido;
 
 @Repository
-public interface PedidoDao extends JpaRepository<Pedido, Integer> {
+public interface PedidoDao extends JpaRepository<Pedido, Long> {
 
 }

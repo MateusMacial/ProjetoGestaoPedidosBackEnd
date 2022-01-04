@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.mateusmacial.projetogestaodepedidos.dao.ProdutoPedidoDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,117 +16,119 @@ import com.mateusmacial.projetogestaodepedidos.entidades.Pedido;
 import com.mateusmacial.projetogestaodepedidos.entidades.Produto;
 import com.mateusmacial.projetogestaodepedidos.entidades.ProdutoPedido;
 
-import antlr.StringUtils;
+// import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class PedidoService {
-	
-	@Autowired 
+
+	@Autowired
 	private PedidoDao pedidoDao;
-	
+
 	@Autowired
 	private ProdutoDao produtoDao;
-		
-	public Pedido find(Integer id) {
-		Optional<Pedido> obj = pedidoRepository.findById(id);
+
+	@Autowired
+	private ProdutoPedidoDao produtoPedidoDao;
+
+	public Pedido find(long id) {
+		Optional<Pedido> obj = pedidoDao.findById(id);
 		return obj.orElse(null);
 	}
-	
-	public Pedido insert(PedidoDTO objDto) {
-		if(objDto == null) {
-			//ToDo
-		}
+
+	public Pedido save(PedidoDTO pedidoDto) {
 		Pedido pedido;
-		if(objDto.getId() > 0) {
-			pedido = pedidoDao.findById(objDto.getId());
+
+		if(pedidoDto.getId() > 0) {
+			pedido = pedidoDao.getById(pedidoDto.getId());
 		}
 		else {
 			pedido = new Pedido();
 		}
-		
-		if(StringUtils.isBlank(objDto.getCodigoPedido())) {
+
+		/*if(StringUtils.isBlank(pedidoDto.getCodigoPedido())) {
 			//ToDo
 		}
-		if(StringUtils.isBlank(objDto.getCliente())) {
+		if(StringUtils.isBlank(pedidoDto.getCliente())) {
 			//ToDo
 		}
-		if(objDto.getDataEntrega() == null) {
+		if(pedidoDto.getDataEntrega() == null) {
 			//ToDo
 		}
-		if(objDto.getProdutosDoPedido() == null) {
-			//ToDO
-		}
-		
-		pedido.setCodigoPedido(objDto.getCodigoPedido());
-		pedido.setCliente(objDto.getCliente());
-		pedido.setDataEntrega(objDto.getDataEntrega());
-		
+		if(pedidoDto.getProdutosDoPedido() == null) {
+			//ToDo
+		}*/
+
+		pedido.setCodigoPedido(pedidoDto.getCodigoPedido());
+		pedido.setCliente(pedidoDto.getCliente());
+		pedido.setDataEntrega(pedidoDto.getDataEntrega());
+		pedido.setObservacao(pedidoDto.getObservacao());
+
 		if(pedido.getProdutosDoPedido() == null) {
 			pedido.setProdutosDoPedido(new ArrayList<>());
 		}
 		pedido.getProdutosDoPedido().clear();
-		
-		for (ProdutoPedidoDTO produtoPedidoDTO : objDto.getProdutosDoPedido()) {
-			
+
+		for (ProdutoPedidoDTO produtoPedidoDTO : pedidoDto.getProdutosDoPedido()) {
+
 			ProdutoPedido produtoPedido;
-			
+
 			if(produtoPedidoDTO.getId() > 0) {
-				produtoPedido = produtoDao.findById(produtoPedidoDTO.getId());
+				produtoPedido = produtoPedidoDao.getById(produtoPedidoDTO.getId());
 			}
 			else {
 				produtoPedido = new ProdutoPedido();
 			}
-			
-			Produto produto = produtoDao.findById(produtoPedidoDTO.getProdutoId());
-			
+
+			Produto produto = produtoDao.getById(produtoPedidoDTO.getProdutoId());
+
 			produtoPedido.setPedido(pedido);
-			produtoPedido.setProdutoId(produto);
-			
+			produtoPedido.setProduto(produto);
+
 			pedido.getProdutosDoPedido().add(produtoPedido);
 		}
-		
-		pedidoDao.save(pedido);
+
+		return pedidoDao.save(pedido);
 	}
-	
-	public Pedido update(Pedido obj) {
+
+	/*public Pedido update(Pedido obj) {
 		Pedido newObj = find(obj.getId());
 		updateData(newObj, obj);
-		return pedidoRepository.save(newObj);
-	}
-	
-	public void delete(Integer id) {
+		return pedidoDao.save(newObj);
+	}*/
+
+	public void delete(long id) {
 		find(id);
-		pedidoRepository.deleteById(id);
+		pedidoDao.deleteById(id);
 	}
-	
-	public void insertProduto(Pedido pedido, Produto produtoInserir) {
+
+	/*public void insertProduto(Pedido pedido, Produto produtoInserir) {
 		pedido.adicionarProduto(produtoInserir);
 		produtoInserir.setPedido(pedido);
-	}
-	
+	}*/
+
 	public List<Pedido> findAll(){
-		return pedidoRepository.findAll();
+		return pedidoDao.findAll();
 	}
-	
-	public Pedido fromDTO(PedidoDTO objDto) {
+
+	/*public Pedido fromDTO(PedidoDTO objDto) {
 		return new Pedido(objDto.getId(), objDto.getCodigoPedido(), objDto.getCliente(), objDto.getDataEntrega(), objDto.getObservacao());
-	}
-	
-	private void updateData(Pedido newObj, Pedido obj) {
+	}*/
+
+	/*private void updateData(Pedido newObj, Pedido obj) {
 		newObj.setCodigoPedido(obj.getCodigoPedido());
 		newObj.setCliente(obj.getCliente());
 		newObj.setDataEntrega(obj.getDataEntrega());
 		newObj.setObservacao(obj.getObservacao());
-		
+
 		for (Produto produto : newObj.getProdutosDoPedido()) {
 			produto.setPedido(null);
 		}
-		
+
 		newObj.getProdutosDoPedido().clear();
-		
+
 		for (Produto produto : obj.getProdutosDoPedido()) {
 			produto.setPedido(newObj);
 			newObj.adicionarProduto(produto);
 		}
-	}
+	}*/
 }

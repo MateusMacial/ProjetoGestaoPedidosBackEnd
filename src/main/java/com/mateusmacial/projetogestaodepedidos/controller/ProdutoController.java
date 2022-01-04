@@ -4,8 +4,10 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,51 +22,37 @@ import com.mateusmacial.projetogestaodepedidos.entidades.Produto;
 import com.mateusmacial.projetogestaodepedidos.services.ProdutoService;
 
 @RestController
-@CrossOrigin
+@Transactional
 @RequestMapping(value="/produtos")
 public class ProdutoController {
-	
-	@Autowired 
+
+	@Autowired
 	private ProdutoService produtoService;
-	
-	@RequestMapping(value="/find", method=RequestMethod.GET)
-	public ResponseEntity<?> find(Integer id) {		
-		Produto obj = produtoService.find(id);				
-		return ResponseEntity.ok().body(obj);
+
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	public void save(@Valid @RequestBody ProdutoDTO produtoDto){
+		produtoService.save(produtoDto);
 	}
-	
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ProdutoDTO objDto){ 
-		Produto obj = produtoService.fromDTO(objDto);
-		obj = produtoService.insert(obj);
-		URI uri = ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				.path("/id")
-				.buildAndExpand(obj.getId())
-				.toUri();
-		return ResponseEntity.created(uri).build();
-	}
-	
-	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public ResponseEntity<Void> update(@Valid @RequestBody ProdutoDTO objDto){		
+
+	/*@RequestMapping(value="/update", method=RequestMethod.POST)
+	public ResponseEntity<Void> update(@Valid @RequestBody ProdutoDTO objDto){
 		Produto obj = produtoService.fromDTO(objDto);
 		obj = produtoService.update(obj);
 		return ResponseEntity.noContent().build();
-	}
-	
+	}*/
+
 	@RequestMapping(value="/delete", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(Integer id){
 		produtoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<ProdutoDTO>> findAll() {		
-		List<Produto> list = produtoService.findAll();		
-		List<ProdutoDTO> listDto = list.stream()
-				.map(obj -> new ProdutoDTO(obj))
+
+	@RequestMapping(value="/get-page",method=RequestMethod.GET)
+	public List<ProdutoDTO> findAll() {
+		ModelMapper modelMapper = new ModelMapper();
+		List<Produto> list = produtoService.findAll();
+		return list.stream()
+				.map(obj -> modelMapper.map(obj, ProdutoDTO.class))
 				.collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
 	}
-	
 }

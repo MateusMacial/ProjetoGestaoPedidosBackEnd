@@ -16,16 +16,17 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+
 public class Produto extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
+	private long id;
+
 	private String codigoProduto;
 	private String descricaoProduto;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
 	private List<ProdutoPedido> pedidosDoProduto = new ArrayList<>();
 }

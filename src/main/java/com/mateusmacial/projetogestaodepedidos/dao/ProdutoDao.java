@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.mateusmacial.projetogestaodepedidos.entidades.Produto;
 
 @Repository
-public interface ProdutoDao extends JpaRepository<Produto, Integer> {
+public interface ProdutoDao extends JpaRepository<Produto, Long> {
 
 }

@@ -5,8 +5,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProdutoPedidoDTO {
-	
-	private Long id;
-	private Long produtoId;
-	private Long pedidoId;
+
+	private long id;
+	private long produtoId;
+	private long pedidoId;
 }

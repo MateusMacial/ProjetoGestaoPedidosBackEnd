@@ -22,13 +22,13 @@ public class Pedido extends AbstractEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
+	private long id;
+
 	private String codigoPedido;
 	private String cliente;
 	private Date dataEntrega;
 	private String observacao;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido", orphanRemoval = true)
-	private List<ProdutoPedido> produtosDoPedido = new ArrayList<>();	
+	private List<ProdutoPedido> produtosDoPedido = new ArrayList<>();
 }
